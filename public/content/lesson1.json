@@ -1,0 +1,7 @@
+{
+  "meta": { "title": "أساسيات الكيمياء", "description": "محتوى تعليمي تفاعلي — سيتم استكماله بعد استلام ملف الدرس.", "keywords": ["كيمياء","أساسيات","تعليم"], "lang": "ar" },
+  "tl_dr": { "one_line": "سيتم توليد الملخص بعد رفع المحتوى.", "three_sentences": "", "eli12": "" },
+  "sections": [],
+  "faq": [],
+  "deliverables": { "html_snippets": [], "chartjs_snippets": [], "mermaid_snippets": [] }
+}
