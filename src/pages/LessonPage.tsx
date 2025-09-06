@@ -44,20 +44,20 @@ import type { Lesson } from "@/lessons/types";
 export default function LessonPage({ lesson, search }: { lesson: Lesson; search: string }) {
   useSearchHighlighter(search);
 
-  const chartConfig = useMemo(() => ({
+  const statesChart = useMemo(() => ({
     type: 'bar',
     data: {
       labels: ['صلب', 'سائل', 'غاز'],
-      datasets: [{ label: 'نسب تقريبية لحالات المادة', data: [34, 33, 33], backgroundColor: ['#60a5fa', '#34d399', '#f472b6'] }]
+      datasets: [{ label: 'خصائص حالات المادة', data: [1, 2, 3], backgroundColor: ['#60a5fa', '#34d399', '#f472b6'] }]
     },
     options: { responsive: true, plugins: { legend: { position: 'top' } } }
   }), []);
 
-  const compositionConfig = useMemo(() => ({
+  const atomChart = useMemo(() => ({
     type: 'doughnut',
     data: {
       labels: ['بروتونات', 'نيوترونات', 'إلكترونات'],
-      datasets: [{ label: 'مكونات الذرة (تصوير مفاهيمي)', data: [33, 33, 34], backgroundColor: ['#f59e0b','#a78bfa','#22d3ee'] }]
+      datasets: [{ label: 'تركيب الذرة', data: [33, 33, 34], backgroundColor: ['#f59e0b','#a78bfa','#22d3ee'] }]
     },
     options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
   }), []);
@@ -67,23 +67,46 @@ export default function LessonPage({ lesson, search }: { lesson: Lesson; search:
       <div className="flex sm:hidden">
         <button onClick={()=>window.history.back()} className="mb-2 ms-auto px-3 py-1.5 rounded-lg border">رجوع</button>
       </div>
-      <SectionCard id="intro" title={`${lesson.title}`}>
-        <p className="text-muted-foreground mb-4">مرحبًا بك! هذه الصفحة تحتوي على كل ما يخص الدرس: ملخص صوتي، شرح مبسّط، رسوم توضيحية، اختبار، وملف PDF.</p>
-        <AudioPlayer src={lesson.audioSrc} title="ملخص الدرس الصوتي" />
+
+      <SectionCard id="intro" title="الدرس الأول: أساسيات الكيمياء">
+        <p className="text-muted-foreground mb-4">هذا الدرس يقدّم مقدمة في علم الكيمياء: تعريف المادة، حالات المادة، تركيب الذرة، الجدول الدوري، التكافؤ، المركبات والتفاعلات الكيميائية.</p>
+        <AudioPlayer src={lesson.audioSrc} title="ملخص صوتي" />
       </SectionCard>
 
-      <SectionCard id="lesson" title="الشرح المبسّط">
-        <MarkdownView src={`/content/lesson${lesson.id}.md`} />
+      <SectionCard id="definition" title="ما هي المادة؟">
+        <p>المادة هي كل ما له كتلة وحجم. تتكون من جسيمات صغيرة جدًا تُسمى الذرات والجزيئات.</p>
       </SectionCard>
 
-      <SectionCard id="charts" title="رسوم بيانية (Chart.js)">
-        <div className="grid md:grid-cols-2 gap-4">
-          <ChartBlock config={chartConfig} />
-          <ChartBlock config={compositionConfig} />
-        </div>
-        <div className="mt-4">
-          <MermaidBlock code={`flowchart TD\nA[مادة] -->|تسخين| B(سائل)\nB -->|تبخير| C{غاز}\nC -->|تكثيف| B\nB -->|تبريد| D[صلب]`} />
-        </div>
+      <SectionCard id="states" title="حالات المادة">
+        <p>للمادة ثلاث حالات رئيسية: صلب، سائل، غاز. تختلف في الشكل، الحجم، والانضغاطية.</p>
+        <ChartBlock config={statesChart} />
+        <MermaidBlock code={`flowchart TD\nA[مادة صلبة] -->|تسخين| B(سائل)\nB -->|تبخير| C{غاز}\nC -->|تكثيف| B\nB -->|تبريد| A`} />
+      </SectionCard>
+
+      <SectionCard id="atom" title="تركيب المادة (الذرة)">
+        <p>الذرة تتكون من بروتونات موجبة، نيوترونات متعادلة في النواة، وإلكترونات سالبة تدور حول النواة.</p>
+        <ChartBlock config={atomChart} />
+      </SectionCard>
+
+      <SectionCard id="periodic" title="الجدول الدوري">
+        <p>العناصر الكيميائية مرتبة في الجدول الدوري حسب العدد الذري. يتكون من مجموعات (أعمدة) ودورات (صفوف).</p>
+      </SectionCard>
+
+      <SectionCard id="valency" title="التكافؤ">
+        <p>التكافؤ هو عدد الإلكترونات التي تفقدها أو تكتسبها الذرة لتصل إلى حالة الاستقرار.</p>
+      </SectionCard>
+
+      <SectionCard id="compounds" title="المركبات والمعادلات">
+        <p>المركبات تتكون من اتحاد عنصرين أو أكثر. تُكتب باستخدام الصيغ والمعادلات الكيميائية.</p>
+      </SectionCard>
+
+      <SectionCard id="reactions" title="أنواع التفاعلات الكيميائية">
+        <ul className="list-disc ps-6">
+          <li>اتحاد مباشر</li>
+          <li>إحلال</li>
+          <li>انحلال حراري</li>
+          <li>أكسدة واختزال</li>
+        </ul>
       </SectionCard>
 
       <SectionCard id="quiz" title="اختبار سريع">
